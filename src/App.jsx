@@ -7,7 +7,7 @@ export default function PastelLuxuryPortfolio() {
   const [aboutTab, setAboutTab] = useState("Who I Am");
   const [creativeScore, setCreativeScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(15);
+  const [timeLeft, setTimeLeft] = useState(10);
   const [gameActive, setGameActive] = useState(false);
   const [orbPosition, setOrbPosition] = useState({ x: 120, y: 120 });
   const orbSize = 80;
