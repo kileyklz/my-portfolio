@@ -285,13 +285,13 @@ const AboutTab = ({ project, index, onClick, active = false, onHover, onLeave })
 
 
   const MainNav = () => (
-    <div className="fixed inset-x-0 top-5 z-50 flex justify-center px-4">
-      <nav className="flex items-center gap-2 rounded-full border border-white/70 bg-white/60 px-3 py-2 shadow-[0_18px_40px_rgba(123,150,196,0.12)] backdrop-blur-xl">
+    <div className="fixed inset-x-0 top-5 z-50 flex justify-center px-2 md:px-4">
+      <nav className="flex items-center gap-1 rounded-full border border-white/70 bg-white/60 p-1.5 shadow-[0_18px_40px_rgba(123,150,196,0.12)] backdrop-blur-xl md:gap-2 md:px-3 md:py-2">
         {navItems.map((item) => (
           <button
             key={item}
             onClick={() => setCurrentPage(item)}
-            className={`rounded-full px-4 py-2 text-sm tracking-[0.18em] font-conso transition ${
+            className={`rounded-full px-3 py-1.5 text-xs tracking-[0.12em] transition md:px-4 md:py-2 md:text-sm md:tracking-[0.18em] font-conso ${
               currentPage === item
                 ? "bg-[#dfeeff] text-slate-700"
                 : "text-slate-500 hover:bg-[#e6f4ff] hover:text-slate-700"
@@ -340,7 +340,7 @@ const AboutTab = ({ project, index, onClick, active = false, onHover, onLeave })
             <h1 className="max-w-3xl font-serif text-5xl leading-[1.05] text-slate-800 md:text-7xl">
               Hello, <br />
               <span className="block text-slate-600">
-                <span className="font-patung text-7xl md:text-9xl">I’m Kiley.</span>
+                <span className="font-patung text-8xl md:text-9xl">I’m Kiley.</span>
               </span>
             </h1>
 
@@ -611,7 +611,7 @@ const CreativePage = () => (
           This page is not ready yet! :(
         </h1>
         <p className="mt-5 max-w-3xl text-base leading-8 text-slate-600">
-          For now, here’s a simple game: click the glowing orb as many times as you can in 10 seconds.
+          For now, here’s a simple game: click the glowing orb as many times as you can in 10 seconds!
         </p>
 
         <div className="mt-10 rounded-[2rem] bg-gradient-to-br from-[#edf6ff] to-[#cadfff] p-4 md:p-6">
