@@ -427,7 +427,9 @@ const CreativePage = () => (
       <div className="rounded-[2.2rem] border border-white/70 bg-white/70 p-8 shadow-[0_18px_50px_rgba(113,144,196,0.12)] md:p-10">
         <p className="text-xs uppercase tracking-[0.45em] text-slate-500">Creative</p>
         <h1 className="mt-3 font-serif text-3xl text-slate-800 sm:text-4xl md:text-6xl">
-          This page is not ready yet! :(
+          This page is not
+          <br className="sm:hidden" />
+          <span className="sm:ml-1">ready yet! :(</span>
         </h1>
         <p className="mt-5 max-w-3xl text-base leading-8 text-slate-600">
           For now, here’s a simple game: click the glowing orb as many times as you can in 10 seconds.
