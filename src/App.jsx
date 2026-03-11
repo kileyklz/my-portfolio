@@ -493,6 +493,7 @@ const CreativePage = () => (
 
 const ContactPage = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [formSending, setFormSending] = useState(false);
 
   return (
     <section className="min-h-screen px-6 pb-20 pt-32 md:px-12 lg:px-20">
@@ -503,7 +504,7 @@ const ContactPage = () => {
             Let’s connect.
           </h1>
           <p className="mt-5 max-w-3xl text-base leading-8 text-slate-600">
-            Whether you want to collaborate, ask a question, or just say hi, feel free to send me a message!
+            Whether you want to collaborate, ask a question, or just say hi, feel free to send me a message.
           </p>
         </div>
 
@@ -513,6 +514,7 @@ const ContactPage = () => {
               action="https://formsubmit.co/kileyzheng@gmail.com"
               method="POST"
               target="hidden_iframe"
+              onSubmit={() => setFormSending(true)}
               className="space-y-5"
             >
               <input type="hidden" name="_captcha" value="false" />
@@ -563,8 +565,9 @@ const ContactPage = () => {
             name="hidden_iframe"
             style={{ display: "none" }}
             onLoad={() => {
-              if (!submitted) {
+              if (formSending) {
                 setSubmitted(true);
+                setFormSending(false);
               }
             }}
           />
