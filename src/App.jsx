@@ -294,7 +294,7 @@ const AboutTab = ({ project, index, onClick, active = false, onHover, onLeave })
             className={`rounded-full px-4 py-2 text-sm tracking-[0.18em] font-conso transition ${
               currentPage === item
                 ? "bg-[#dfeeff] text-slate-700"
-                : "text-slate-500 hover:bg-white/60 hover:text-slate-700"
+                : "text-slate-500 hover:bg-[#e6f4ff] hover:text-slate-700"
             }`}
           >
             {item}
@@ -365,8 +365,7 @@ const AboutTab = ({ project, index, onClick, active = false, onHover, onLeave })
           </div>
 
           <div className="relative mx-auto w-full max-w-xl">
-            <div className="rounded-[2rem] border border-white/70 bg-white/55 p-4 shadow-[0_30px_80px_rgba(123,150,196,0.14)] backdrop-blur-xl">
-              <div className="rounded-[1.8rem] bg-gradient-to-br from-[#edf6ff] via-[#dcebff] to-[#c8dcff] p-6">
+            <div className="rounded-[2rem] border border-white/70 shadow-[0_30px_80px_rgba(123,150,196,0.14)] bg-gradient-to-br from-[#edf6ff] via-[#dcebff] to-[#c8dcff] p-6">
                 <div className="mb-6 flex items-center justify-between text-slate-500">
                   <span className="text-xs uppercase tracking-[0.35em]">Selected Moodboard</span>
                   <span className="text-lg">✦</span>
@@ -387,7 +386,7 @@ const AboutTab = ({ project, index, onClick, active = false, onHover, onLeave })
                 <div className="rounded-[1.5rem] bg-white/55 p-5">
                   <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Portrait</p>
 
-                  <div className="mt-4 flex h-full min-h-[260px] items-center justify-center overflow-hidden rounded-[1.3rem] border border-white/70 bg-[#eaf4ff]">
+                  <div className="mt-4 h-[300px] overflow-hidden rounded-[1.3rem] border border-white/70 bg-[#eaf4ff]">
                     <img
                       src="/kiley.jpg"
                       alt="Portrait"
@@ -395,7 +394,6 @@ const AboutTab = ({ project, index, onClick, active = false, onHover, onLeave })
                     />
                   </div>
                 </div>
-              </div>
               </div>
             </div>
           </div>
