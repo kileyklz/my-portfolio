@@ -1,9 +1,12 @@
 import React, { useMemo, useState, useEffect } from 'react';
+import Aurora from './Aurora';
+
 
 export default function PastelLuxuryPortfolio() {
   const navItems = ["Portfolio", "About", "Creative", "Contact"];
   const [currentPage, setCurrentPage] = useState("Portfolio");
   const [activeProject, setActiveProject] = useState(0);
+  const [hoveredProject, setHoveredProject] = useState(null);
   const [aboutTab, setAboutTab] = useState("Who I Am");
   const [creativeScore, setCreativeScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
@@ -13,7 +16,9 @@ export default function PastelLuxuryPortfolio() {
   const orbSize = 80;
   const gameWidth = 900;
   const gameHeight = 420;
+  
 
+  
   /* 
   const [orbX, setOrbX] = useState(24);
   const [orbY, setOrbY] = useState(24);
@@ -25,38 +30,51 @@ export default function PastelLuxuryPortfolio() {
   */
 
   const projects = useMemo(
-    () => [
-      {
-        title: "Editorial Brand System",
-        type: "Identity / Art Direction",
-        year: "2026",
-        description:
-          "A refined visual identity and launch system designed to feel polished, warm, and quietly expressive.",
-      },
-      {
-        title: "Luxury Product Landing Page",
-        type: "Web Design / UI",
-        year: "2025",
-        description:
-          "A soft, high-end landing page concept balancing calm whitespace, elegant type, and subtle motion.",
-      },
-      {
-        title: "Social Content Suite",
-        type: "Campaign / Motion",
-        year: "2025",
-        description:
-          "A modular campaign kit for social storytelling with premium layouts and a playful visual rhythm.",
-      },
-      {
-        title: "Packaging Storyboard",
-        type: "Concept / Print",
-        year: "2024",
-        description:
-          "A presentation-led concept exploring tactile packaging, tonal blues, and boutique-level detail.",
-      },
-    ],
-    []
-  );
+  () => [
+    {
+      title: "Home",
+      type: "Interactive Guide",
+      year: "2026",
+      description:
+        "Hover over each tab to preview a project, then click to open it below. This section is meant to feel playful, tactile, and more interactive than a standard portfolio grid.",
+      previewTitle: "How it works",
+      previewText:
+        "Each tab reveals a smooth preview on hover and opens a fuller panel when selected.",
+    },
+    {
+      title: "Brand System",
+      type: "Identity / Art Direction",
+      year: "2026",
+      description:
+        "A refined visual identity and launch system designed to feel polished, warm, and quietly expressive.",
+      previewTitle: "Editorial branding",
+      previewText:
+        "Soft luxury visuals, refined typography, and a calm art direction system.",
+    },
+    {
+      title: "Landing Page",
+      type: "Web Design / UI",
+      year: "2025",
+      description:
+        "A soft, high-end landing page concept balancing calm whitespace, elegant type, and subtle motion.",
+      previewTitle: "Luxury web concept",
+      previewText:
+        "Minimal layouts, gentle interactions, and a premium digital presentation.",
+    },
+    {
+      title: "Social Content",
+      type: "Campaign / Motion",
+      year: "2025",
+      description:
+        "A modular campaign kit for social storytelling with premium layouts and a playful visual rhythm.",
+      previewTitle: "Campaign system",
+      previewText:
+        "Flexible social assets built for cohesive storytelling and motion-ready use.",
+    },
+  ],
+  []
+);
+
 
   const aboutSections = {
     "Who I Am": {
@@ -159,32 +177,113 @@ useEffect(() => {
 }, [currentPage, dx, dy]);
 */
 
-  const FolderCard = ({ title, subtitle, index, onClick, active = false }) => {
-    const gradients = [
-      "from-[#eaf4ff] to-[#d8e9ff]",
-      "from-[#dceeff] to-[#bfdcff]",
-      "from-[#c7ddff] to-[#a8cbff]",
-      "from-[#adcaff] to-[#7daaf3]",
-    ];
+  const ProjectTab = ({ project, index, onClick, active = false, onHover, onLeave }) => {
+  const tabTones = [
+    "from-[#eef6ff] to-[#dcecff]",
+    "from-[#e3f0ff] to-[#cfe3ff]",
+    "from-[#d7e8ff] to-[#bfd9ff]",
+    "from-[#cadfff] to-[#aecdff]",
+  ];
 
-    return (
-      <button
-        onClick={onClick}
-        className={`group relative h-40 w-full rounded-[1.8rem] border border-white/70 bg-gradient-to-br ${gradients[index % gradients.length]} p-5 text-left shadow-[0_18px_50px_rgba(113,144,196,0.14)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_22px_60px_rgba(113,144,196,0.2)] ${
-          active ? "ring-2 ring-white/90" : ""
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
+      className={`group relative min-h-[185px] w-full rounded-t-[2rem] border border-white/70 bg-gradient-to-b ${tabTones[index % tabTones.length]} px-6 pb-6 pt-5 text-left transition-all duration-300 ${
+        active
+          ? "translate-y-1 shadow-[0_20px_50px_rgba(113,144,196,0.18)]"
+          : "shadow-[0_10px_30px_rgba(113,144,196,0.10)] hover:-translate-y-1"
+      }`}
+    >
+      <div className="absolute inset-x-0 bottom-0 h-6 rounded-b-[1.2rem] bg-white/20 blur-md" />
+
+      <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+        {project.type}
+      </p>
+      <h3 className="mt-3 font-serif text-3xl text-slate-800">
+        {project.title}
+      </h3>
+      <p className="mt-3 max-w-[24ch] text-sm leading-7 text-slate-600">
+        {project.previewText}
+      </p>
+
+      <div
+        className={`pointer-events-none absolute left-1/2 top-[105%] z-30 w-[92%] -translate-x-1/2 rounded-[1.5rem] border border-white/80 bg-white/88 p-5 shadow-[0_20px_50px_rgba(113,144,196,0.18)] backdrop-blur-xl transition-all duration-300 ${
+          hoveredProject === index
+            ? "translate-y-0 opacity-100"
+            : "translate-y-3 opacity-0"
         }`}
       >
-        <div className="absolute left-5 top-[-10px] h-7 w-24 rounded-t-[1rem] border border-b-0 border-white/70 bg-white/55 backdrop-blur" />
-        <div className="mt-5 flex h-full flex-col justify-between">
-          <div>
-            <p className="font-serif text-xl tracking-[0.08em] text-slate-700">{title}</p>
-            <p className="mt-2 text-xs uppercase tracking-[0.28em] text-slate-500">{subtitle}</p>
-          </div>
-          <span className="text-sm text-slate-600 transition group-hover:translate-x-1">Open folder →</span>
-        </div>
-      </button>
-    );
-  };
+        <p className="text-xs uppercase tracking-[0.25em] text-slate-500">
+          Preview
+        </p>
+        <p className="mt-2 font-serif text-2xl text-slate-800">
+          {project.previewTitle}
+        </p>
+        <p className="mt-2 text-sm leading-7 text-slate-600">
+          {project.previewText}
+        </p>
+      </div>
+    </button>
+  );
+};
+
+const AboutTab = ({ project, index, onClick, active = false, onHover, onLeave }) => {
+  const tabTones = [
+    "from-[#eef6ff] to-[#dcecff]",
+    "from-[#e3f0ff] to-[#cfe3ff]",
+    "from-[#d7e8ff] to-[#bfd9ff]",
+    "from-[#cadfff] to-[#aecdff]",
+  ];
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
+      className={`group relative min-h-[135px] w-full rounded-t-[2rem] border border-white/70 bg-gradient-to-b ${tabTones[index % tabTones.length]} px-6 pb-5 pt-4 text-left transition-all duration-300 ${
+        active
+          ? "translate-y-1 shadow-[0_20px_50px_rgba(113,144,196,0.18)]"
+          : "shadow-[0_10px_30px_rgba(113,144,196,0.10)] hover:-translate-y-1"
+      }`}
+    >
+      <div className="absolute inset-x-0 bottom-0 h-6 rounded-b-[1.2rem] bg-white/20 blur-md" />
+
+      <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+        {project.type}
+      </p>
+      <h3 className="mt-2 font-serif text-2xl text-slate-800">
+        {project.title}
+      </h3>
+      <p className="mt-2 max-w-[24ch] text-xs leading-6 text-slate-600">
+        {project.previewText}
+      </p>
+
+      <div
+        className={`pointer-events-none absolute left-1/2 top-[105%] z-30 w-[92%] -translate-x-1/2 rounded-[1.5rem] border border-white/80 bg-white/88 p-5 shadow-[0_20px_50px_rgba(113,144,196,0.18)] backdrop-blur-xl transition-all duration-300 ${
+          hoveredProject === index
+            ? "translate-y-0 opacity-100"
+            : "translate-y-3 opacity-0"
+        }`}
+      >
+        <p className="text-xs uppercase tracking-[0.25em] text-slate-500">
+          Preview
+        </p>
+        <p className="mt-2 font-serif text-2xl text-slate-800">
+          {project.previewTitle}
+        </p>
+        <p className="mt-2 text-sm leading-7 text-slate-600">
+          {project.previewText}
+        </p>
+      </div>
+    </button>
+  );
+};
+
+
 
   const MainNav = () => (
     <div className="fixed inset-x-0 top-5 z-50 flex justify-center px-4">
@@ -193,7 +292,7 @@ useEffect(() => {
           <button
             key={item}
             onClick={() => setCurrentPage(item)}
-            className={`rounded-full px-4 py-2 text-sm tracking-[0.18em] transition ${
+            className={`rounded-full px-4 py-2 text-sm tracking-[0.18em] font-conso transition ${
               currentPage === item
                 ? "bg-[#dfeeff] text-slate-700"
                 : "text-slate-500 hover:bg-white/60 hover:text-slate-700"
@@ -209,17 +308,30 @@ useEffect(() => {
   const PortfolioPage = () => (
     <div>
       <section className="relative flex min-h-screen items-center overflow-hidden px-6 pb-10 pt-28 md:px-12 lg:px-20">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.95),rgba(224,238,255,0.8),rgba(209,228,252,0.6),transparent_65%)]" />
-        <div className="absolute right-[-4rem] top-20 h-72 w-72 rounded-full bg-white/40 blur-3xl" />
-        <div className="absolute bottom-12 left-[-3rem] h-56 w-56 rounded-full bg-[#dcecff]/60 blur-3xl" />
+        <div className="absolute inset-0 bg-[#dff1ff]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(248,252,255,0.95),rgb(232, 245, 255),rgb(192, 228, 254),rgb(177, 216, 245),transparent_72%)]" />
+          <div className="pointer-events-none absolute inset-0 opacity-55">
+            <Aurora
+              colorStops={["#f7fcff", "#d9f1ff", "#bfe7ff"]}
+              blend={0.15}
+              amplitude={0.25}
+              speed={0.8}
+            />
+          </div>
+          <div className="absolute right-[-4rem] top-20 h-72 w-72 rounded-full bg-white/40 blur-3xl" />
+          <div className="absolute bottom-12 left-[-3rem] h-56 w-56 rounded-full bg-[#dcecff]/60 blur-3xl" />
+
 
         <div className="relative mx-auto grid w-full max-w-7xl gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <div>
-            <p className="mb-4 text-xs uppercase tracking-[0.45em] text-slate-500">A glimpse into my world</p>
+            <p className="mb-4 text-xs uppercase tracking-[0.45em] text-slate-500">A glimpse into my life</p>
             <h1 className="max-w-3xl font-serif text-5xl leading-[1.05] text-slate-800 md:text-7xl">
               Hello, <br />
-              <span className="block italic text-slate-600"> I’m Kiley.</span>
+              <span className="block text-slate-600">
+                <span className="font-patung text-7xl md:text-9xl">I’m Kiley.</span>
+              </span>
             </h1>
+
             <p className="mt-6 max-w-xl text-base leading-8 text-slate-600 md:text-lg">
               Aspiring designer and creative with an interest in project management, currently studying Digital Enterprise Management <br /> at the Univeristy of Toronto.
             </p>
@@ -282,95 +394,154 @@ useEffect(() => {
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-xs uppercase tracking-[0.45em] text-slate-500">Work</p>
-              <h2 className="mt-3 font-serif text-4xl text-slate-800 md:text-5xl">Projects in folders</h2>
+              <p className="text-xs uppercase tracking-[0.45em] text-slate-500">Learn more about my work</p>
+              <h2 className="mt-3 font-patung text-7xl text-slate-800 md:text-7xl">
+                Projects
+              </h2>
             </div>
             <p className="max-w-lg text-sm leading-7 text-slate-600">
-              Each folder can open into a featured project, case study, or external link once your real work is ready.
+              Explore selected work by clicking a tab to open the section below.
             </p>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {projects.map((project, index) => (
-              <FolderCard
-                key={project.title}
-                title={project.title}
-                subtitle={project.type}
-                index={index}
-                active={activeProject === index}
-                onClick={() => setActiveProject(index)}
-              />
-            ))}
-          </div>
+          <div className="relative">
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4 xl:gap-3">
+              {projects.map((project, index) => (
+                <ProjectTab
+                  key={project.title}
+                  project={project}
+                  index={index}
+                  active={activeProject === index}
+                  onClick={() => setActiveProject(index)}
+                  onHover={() => setHoveredProject(index)}
+                  onLeave={() => setHoveredProject(null)}
+                />
+              ))}
+            </div>
 
-          <div className="mt-8 rounded-[2rem] border border-white/70 bg-white/65 p-8 shadow-[0_18px_50px_rgba(113,144,196,0.12)] backdrop-blur-xl">
-            <div className="grid gap-8 lg:grid-cols-[1fr_0.7fr] lg:items-end">
-              <div>
-                <p className="text-xs uppercase tracking-[0.35em] text-slate-500">Featured Project</p>
-                <h3 className="mt-3 font-serif text-4xl text-slate-800">{projects[activeProject].title}</h3>
-                <div className="mt-5 flex flex-wrap gap-3 text-xs uppercase tracking-[0.25em] text-slate-500">
-                  <span>{projects[activeProject].type}</span>
-                  <span>•</span>
-                  <span>{projects[activeProject].year}</span>
+            <div className="relative z-10 -mt-1 rounded-[2.2rem] border border-white/70 bg-white/78 p-8 shadow-[0_24px_60px_rgba(113,144,196,0.14)] backdrop-blur-xl">
+              <div className="grid gap-8 lg:grid-cols-[1fr_0.7fr] lg:items-end">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.35em] text-slate-500">
+                    Open Tab
+                  </p>
+                  <h3 className="mt-3 font-serif text-4xl text-slate-800">
+                    {projects[activeProject].title}
+                  </h3>
+                  <div className="mt-5 flex flex-wrap gap-3 text-xs uppercase tracking-[0.25em] text-slate-500">
+                    <span>{projects[activeProject].type}</span>
+                    <span>•</span>
+                    <span>{projects[activeProject].year}</span>
+                  </div>
+                  <p className="mt-6 max-w-2xl text-base leading-8 text-slate-600">
+                    {projects[activeProject].description}
+                  </p>
                 </div>
-                <p className="mt-6 max-w-2xl text-base leading-8 text-slate-600">
-                  {projects[activeProject].description}
-                </p>
-              </div>
-              <div className="rounded-[1.8rem] bg-gradient-to-br from-[#edf5ff] to-[#bfd9ff] p-6">
-                <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Case Study Placeholder</p>
-                <div className="mt-4 rounded-[1.3rem] border border-white/70 bg-white/65 p-5 text-sm leading-7 text-slate-600">
-                  Replace this panel with project images, a short process summary, outcomes, or a button to a dedicated project page.
+
+                <div className="rounded-[1.8rem] bg-gradient-to-br from-[#edf5ff] to-[#bfd9ff] p-6">
+                  <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                    Preview Panel
+                  </p>
+                  <div className="mt-4 rounded-[1.4rem] border border-white/70 bg-white/65 p-5">
+                    <p className="font-serif text-3xl text-slate-800">
+                      {projects[activeProject].previewTitle}
+                    </p>
+                    <p className="mt-3 text-sm leading-7 text-slate-600">
+                      {projects[activeProject].previewText}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
+
     </div>
   );
 
   const AboutPage = () => {
-    const tabs = Object.keys(aboutSections);
-    const section = aboutSections[aboutTab];
+  const tabs = Object.keys(aboutSections);
+  const section = aboutSections[aboutTab];
 
-    return (
-      <section className="min-h-screen px-6 pb-20 pt-32 md:px-12 lg:px-20">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-10">
-            <p className="text-xs uppercase tracking-[0.45em] text-slate-500">About</p>
-            <h1 className="mt-3 font-serif text-5xl text-slate-800 md:text-6xl">Folder-style profile</h1>
+  return (
+    <section className="min-h-screen px-6 pb-20 pt-32 md:px-12 lg:px-20">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="text-xs uppercase tracking-[0.45em] text-slate-500">Who I am</p>
+            <h1 className="mt-3 font-patung text-8xl text-slate-800 md:text-8xl">
+              About me
+            </h1>
+          </div>
+          <p className="max-w-lg text-sm leading-7 text-slate-600">
+            Explore different parts of my background by hovering over each tab, then click to open the section below.
+          </p>
+        </div>
+
+        <div className="relative">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4 xl:gap-3">
+            {tabs.map((tab, index) => {
+              const tabSection = aboutSections[tab];
+
+              return (
+                <AboutTab
+                  key={tab}
+                  project={{
+                    title: tab,
+                    type: "About Section",
+                    year: "",
+                    description: tabSection.body,
+                    previewTitle: tabSection.title,
+                    previewText: tabSection.extras[0],
+                  }}
+                  index={index}
+                  active={aboutTab === tab}
+                  onClick={() => setAboutTab(tab)}
+                  onHover={() => setHoveredProject(index)}
+                  onLeave={() => setHoveredProject(null)}
+                />
+              );
+            })}
           </div>
 
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {tabs.map((tab, index) => (
-              <FolderCard
-                key={tab}
-                title={tab}
-                subtitle="About section"
-                index={index}
-                active={aboutTab === tab}
-                onClick={() => setAboutTab(tab)}
-              />
-            ))}
-          </div>
+          <div className="relative z-10 -mt-1 rounded-[2.2rem] border border-white/70 bg-white/78 p-8 shadow-[0_24px_60px_rgba(113,144,196,0.14)] backdrop-blur-xl">
+            <div className="grid gap-8 lg:grid-cols-[1fr_0.7fr] lg:items-start">
+              <div>
+                <p className="text-xs uppercase tracking-[0.35em] text-slate-500">
+                  Open Tab
+                </p>
+                <h2 className="mt-3 font-serif text-4xl text-slate-800">
+                  {section.title}
+                </h2>
+                <p className="mt-6 max-w-3xl text-base leading-8 text-slate-600">
+                  {section.body}
+                </p>
+              </div>
 
-          <div className="mt-8 rounded-[2rem] border border-white/70 bg-white/70 p-8 shadow-[0_18px_50px_rgba(113,144,196,0.12)]">
-            <p className="text-xs uppercase tracking-[0.35em] text-slate-500">Open Folder</p>
-            <h2 className="mt-3 font-serif text-4xl text-slate-800">{section.title}</h2>
-            <p className="mt-6 max-w-3xl text-base leading-8 text-slate-600">{section.body}</p>
-            <div className="mt-8 grid gap-4 md:grid-cols-3">
-              {section.extras.map((item) => (
-                <div key={item} className="rounded-[1.4rem] bg-gradient-to-br from-white to-[#e7f2ff] p-5 text-sm leading-7 text-slate-600">
-                  {item}
+              <div className="rounded-[1.8rem] bg-gradient-to-br from-[#edf5ff] to-[#bfd9ff] p-6">
+                <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                  Highlights
+                </p>
+                <div className="mt-4 grid gap-4">
+                  {section.extras.map((item) => (
+                    <div
+                      key={item}
+                      className="rounded-[1.4rem] border border-white/70 bg-white/65 p-5 text-sm leading-7 text-slate-600"
+                    >
+                      {item}
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </div>
-      </section>
-    );
-  };
+      </div>
+    </section>
+  );
+};
+
 
 /*
 const CreativePage = () => (
@@ -426,10 +597,8 @@ const CreativePage = () => (
     <div className="mx-auto max-w-6xl">
       <div className="rounded-[2.2rem] border border-white/70 bg-white/70 p-8 shadow-[0_18px_50px_rgba(113,144,196,0.12)] md:p-10">
         <p className="text-xs uppercase tracking-[0.45em] text-slate-500">Creative</p>
-        <h1 className="mt-3 font-serif text-5xl text-slate-800 sm:text-5xl md:text-6xl"> 
-          This page is not
-          <br className="sm:hidden" />
-          <span className="sm:ml-1">ready yet! :(</span>
+        <h1 className="mt-3 font-patung text-7xl text-slate-800 md:text-7xl">
+          This page is not ready yet! :(
         </h1>
         <p className="mt-5 max-w-3xl text-base leading-8 text-slate-600">
           For now, here’s a simple game: click the glowing orb as many times as you can in 10 seconds.
@@ -511,7 +680,7 @@ const ContactPage = () => {
       <div className="mx-auto max-w-6xl">
         <div className="mb-10">
           <p className="text-xs uppercase tracking-[0.45em] text-slate-500">Contact</p>
-          <h1 className="mt-3 font-serif text-5xl text-slate-800 md:text-6xl">
+          <h1 className="mt-3 font-patung text-8xl text-slate-800 md:text-8xl">
             Let’s connect.
           </h1>
           <p className="mt-5 max-w-3xl text-base leading-8 text-slate-600">
