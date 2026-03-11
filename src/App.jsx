@@ -1,13 +1,28 @@
-export default function PastelLuxuryPortfolio() {
-  const { useMemo, useState, useEffect } = React;
+import React, { useMemo, useState, useEffect } from 'react';
 
+export default function PastelLuxuryPortfolio() {
   const navItems = ["Portfolio", "About", "Creative", "Contact"];
   const [currentPage, setCurrentPage] = useState("Portfolio");
   const [activeProject, setActiveProject] = useState(0);
   const [aboutTab, setAboutTab] = useState("Who I Am");
   const [creativeScore, setCreativeScore] = useState(0);
-  const [orbPosition, setOrbPosition] = useState({ x: 50, y: 50 });
-  const [orbsCaught, setOrbsCaught] = useState(0);
+  const [highScore, setHighScore] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(15);
+  const [gameActive, setGameActive] = useState(false);
+  const [orbPosition, setOrbPosition] = useState({ x: 120, y: 120 });
+  const orbSize = 80;
+  const gameWidth = 900;
+  const gameHeight = 420;
+
+  /* 
+  const [orbX, setOrbX] = useState(24);
+  const [orbY, setOrbY] = useState(24);
+  const [dx, setDx] = useState(2.4);
+  const [dy, setDy] = useState(2.1);
+  const orbSize = 64;
+  const gameWidth = 900; prob dont even need this and is causing weird scaling issues.
+  const gameHeight = 420;
+  */
 
   const projects = useMemo(
     () => [
@@ -70,16 +85,79 @@ export default function PastelLuxuryPortfolio() {
     },
   };
 
-  useEffect(() => {
-    if (currentPage !== "Creative") return;
-    const moveOrb = () => {
-      setOrbPosition({
-        x: Math.floor(Math.random() * 78) + 10,
-        y: Math.floor(Math.random() * 58) + 20,
-      });
+  const getRandomOrbPosition = () => {
+    const maxX = gameWidth - orbSize;
+    const maxY = gameHeight - orbSize;
+
+    return {
+      x: Math.floor(Math.random() * maxX),
+      y: Math.floor(Math.random() * maxY),
     };
-    moveOrb();
-  }, [currentPage, orbsCaught]);
+  };
+
+  const startGame = () => {
+    setCreativeScore(0);
+    setTimeLeft(10);
+    setGameActive(true);
+    setOrbPosition(getRandomOrbPosition());
+  };
+
+  const handleOrbClick = () => {
+    if (!gameActive || timeLeft <= 0) return;
+
+    setCreativeScore((prev) => {
+    const nextScore = prev + 1;
+    setHighScore((prevHigh) => Math.max(prevHigh, nextScore));
+    return nextScore;
+  });
+
+    setOrbPosition(getRandomOrbPosition());
+  };
+
+  useEffect(() => {
+    if (!gameActive) return;
+    if (timeLeft <= 0) {
+      setGameActive(false);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [gameActive, timeLeft]);
+
+
+useEffect(() => {
+  window.scrollTo(0, 0);
+}, [currentPage]);
+
+/* 
+useEffect(() => {
+  if (currentPage !== "Creative") return;
+
+  const interval = setInterval(() => {
+    setOrbX((prevX) => {
+      const nextX = prevX + dx;
+      if (nextX <= 0 || nextX >= gameWidth - orbSize) {
+        setDx((oldDx) => -oldDx);
+      }
+      return Math.max(0, Math.min(nextX, gameWidth - orbSize));
+    });
+
+    setOrbY((prevY) => {
+      const nextY = prevY + dy;
+      if (nextY <= 0 || nextY >= gameHeight - orbSize) {
+        setDy((oldDy) => -oldDy);
+      }
+      return Math.max(0, Math.min(nextY, gameHeight - orbSize));
+    });
+  }, 16);
+
+  return () => clearInterval(interval);
+}, [currentPage, dx, dy]);
+*/
 
   const FolderCard = ({ title, subtitle, index, onClick, active = false }) => {
     const gradients = [
@@ -137,13 +215,13 @@ export default function PastelLuxuryPortfolio() {
 
         <div className="relative mx-auto grid w-full max-w-7xl gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <div>
-            <p className="mb-4 text-xs uppercase tracking-[0.45em] text-slate-500">Portfolio / Designer / Creative</p>
+            <p className="mb-4 text-xs uppercase tracking-[0.45em] text-slate-500">A glimpse into my world</p>
             <h1 className="max-w-3xl font-serif text-5xl leading-[1.05] text-slate-800 md:text-7xl">
-              Soft luxury,
-              <span className="block italic text-slate-600">with personality.</span>
+              Hello, <br />
+              <span className="block italic text-slate-600"> I’m Kiley.</span>
             </h1>
             <p className="mt-6 max-w-xl text-base leading-8 text-slate-600 md:text-lg">
-              A pastel-blue portfolio concept inspired by refined luxury websites, balanced with a warm, personal, slightly cute visual language.
+              Aspiring designer and creative with an interest in project management, currently studying Digital Enterprise Management <br /> at the Univeristy of Toronto.
             </p>
 
             <div className="mt-10 flex flex-wrap gap-4">
@@ -166,25 +244,34 @@ export default function PastelLuxuryPortfolio() {
             <div className="rounded-[2rem] border border-white/70 bg-white/55 p-4 shadow-[0_30px_80px_rgba(123,150,196,0.14)] backdrop-blur-xl">
               <div className="rounded-[1.8rem] bg-gradient-to-br from-[#edf6ff] via-[#dcebff] to-[#c8dcff] p-6">
                 <div className="mb-6 flex items-center justify-between text-slate-500">
-                  <span className="text-xs uppercase tracking-[0.35em]">Selected Mood</span>
+                  <span className="text-xs uppercase tracking-[0.35em]">Selected Moodboard</span>
                   <span className="text-lg">✦</span>
                 </div>
-                <div className="grid gap-4 md:grid-cols-2">
+              <div className="grid gap-4 md:grid-cols-[0.95fr_1.05fr]">
+                <div className="grid gap-4">
                   <div className="rounded-[1.5rem] bg-white/65 p-5">
-                    <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Aesthetic</p>
+                    <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Colour</p>
                     <p className="mt-3 font-serif text-3xl text-slate-700">Pastel Blue</p>
                   </div>
+
                   <div className="rounded-[1.5rem] bg-white/50 p-5">
-                    <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Tone</p>
-                    <p className="mt-3 font-serif text-3xl text-slate-700">Cute + Professional</p>
-                  </div>
-                  <div className="rounded-[1.5rem] bg-white/50 p-5 md:col-span-2">
-                    <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Style Notes</p>
-                    <p className="mt-3 text-sm leading-7 text-slate-600">
-                      Centered navigation, calm whitespace, editorial typography, folder-inspired layouts, and soft gradient accents.
-                    </p>
+                    <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Aesthetic</p>
+                    <p className="mt-3 font-serif text-3xl text-slate-700">Minimal, Soft, Luxurious</p>
                   </div>
                 </div>
+
+                <div className="rounded-[1.5rem] bg-white/55 p-5">
+                  <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Portrait</p>
+
+                  <div className="mt-4 flex h-full min-h-[260px] items-center justify-center overflow-hidden rounded-[1.3rem] border border-white/70 bg-[#eaf4ff]">
+                    <img
+                      src="/kiley.jpg"
+                      alt="Portrait"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                </div>
+              </div>
               </div>
             </div>
           </div>
@@ -285,64 +372,207 @@ export default function PastelLuxuryPortfolio() {
     );
   };
 
-  const CreativePage = () => (
-    <section className="min-h-screen px-6 pb-20 pt-32 md:px-12 lg:px-20">
-      <div className="mx-auto max-w-6xl">
-        <div className="rounded-[2.2rem] border border-white/70 bg-white/70 p-8 shadow-[0_18px_50px_rgba(113,144,196,0.12)] md:p-10">
-          <p className="text-xs uppercase tracking-[0.45em] text-slate-500">Creative</p>
-          <h1 className="mt-3 font-serif text-5xl text-slate-800 md:text-6xl">This page is not ready yet! :(</h1>
-          <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600">
-            For now, here’s a tiny game: catch the glowing orb as many times as you can.
-          </p>
+/*
+const CreativePage = () => (
+  <section className="min-h-screen px-6 pb-20 pt-32 md:px-12 lg:px-20">
+    <div className="mx-auto max-w-6xl">
+      <div className="rounded-[2.2rem] border border-white/70 bg-white/70 p-8 shadow-[0_18px_50px_rgba(113,144,196,0.12)] md:p-10">
+        <p className="text-xs uppercase tracking-[0.45em] text-slate-500">Creative</p>
+        <h1 className="mt-3 font-serif text-5xl text-slate-800 md:text-6xl">
+          This page is not ready yet! :(
+        </h1>
+        <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600">
+          For now, here’s a tiny game: catch the glowing orb as many times as you can.
+        </p>
 
-          <div className="mt-10 rounded-[2rem] bg-gradient-to-br from-[#edf6ff] to-[#cadfff] p-4 md:p-6">
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-3 text-sm text-slate-600">
-              <p>Score: <span className="font-semibold">{creativeScore}</span></p>
-              <p>Orbs caught: <span className="font-semibold">{orbsCaught}</span></p>
+        <div className="mt-10 rounded-[2rem] bg-gradient-to-br from-[#edf6ff] to-[#cadfff] p-4 md:p-6">
+          <div className="mb-4 text-sm text-slate-600">
+            <p>
+              Score: <span className="font-semibold">{creativeScore}</span>
+            </p>
+          </div>
+
+          <div
+            className="relative h-[420px] overflow-hidden rounded-[1.7rem] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.75),rgba(226,239,255,0.85))]"
+            style={{ maxWidth: `${gameWidth}px` }}
+          >
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.9),transparent_55%)]" />
+
+            <div
+              onMouseDown={() => {
+                setCreativeScore((s) => s + 1);
+                setDx((oldDx) => oldDx * 1.08);
+                setDy((oldDy) => oldDy * 1.08);
+              }}
+              className="absolute z-10 h-16 w-16 cursor-pointer rounded-full border border-white/80 bg-white/90 shadow-[0_0_60px_rgba(255,255,255,0.95)]"
+              style={{
+                left: `${orbX}px`,
+                top: `${orbY}px`,
+              }}
+              aria-label="Catch orb"
+            >
+              <div className="h-full w-full rounded-full bg-gradient-to-br from-[#fdfefe] via-[#dceeff] to-[#bdd8ff]" />
             </div>
-            <div className="relative h-[420px] overflow-hidden rounded-[1.7rem] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.75),rgba(226,239,255,0.85))]">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.9),transparent_55%)]" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+*/
+
+const CreativePage = () => (
+  <section className="min-h-screen px-6 pb-20 pt-32 md:px-12 lg:px-20">
+    <div className="mx-auto max-w-6xl">
+      <div className="rounded-[2.2rem] border border-white/70 bg-white/70 p-8 shadow-[0_18px_50px_rgba(113,144,196,0.12)] md:p-10">
+        <p className="text-xs uppercase tracking-[0.45em] text-slate-500">Creative</p>
+        <h1 className="mt-3 font-serif text-5xl text-slate-800 md:text-6xl">
+          This page is not ready yet! :(
+        </h1>
+        <p className="mt-5 max-w-3xl text-base leading-8 text-slate-600">
+          For now, here’s a simple game: click the glowing orb as many times as you can in 10 seconds.
+        </p>
+
+        <div className="mt-10 rounded-[2rem] bg-gradient-to-br from-[#edf6ff] to-[#cadfff] p-4 md:p-6">
+          <div
+            className="mx-auto mb-4 flex w-full flex-wrap items-center justify-between gap-4 text-sm text-slate-600"
+            style={{ maxWidth: `${gameWidth}px` }}
+          >
+            <p>
+              Score: <span className="font-semibold">{creativeScore}</span>
+            </p>
+            <p>
+              High Score: <span className="font-semibold">{highScore}</span>
+            </p>
+            <p>
+              Time Left: <span className="font-semibold">{timeLeft}s</span>
+            </p>
+          </div>
+
+          <div
+            className="relative mx-auto h-[420px] w-full overflow-hidden rounded-[1.7rem] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.75),rgba(226,239,255,0.85))]"
+            style={{ maxWidth: `${gameWidth}px` }}
+          >
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.9),transparent_55%)]" />
+
+            {!gameActive && (
+              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 bg-white/20 backdrop-blur-[1px]">
+                <p className="text-center text-lg text-slate-700">
+                  {timeLeft === 0 ? "Time’s up!" : "Ready to play?"}
+                </p>
+                <button
+                  type="button"
+                  onClick={startGame}
+                  className="rounded-full border border-white/80 bg-white/90 px-6 py-3 text-sm tracking-[0.18em] text-slate-700 transition hover:scale-105"
+                >
+                  {timeLeft === 0 ? "Play Again" : "Start Game"}
+                </button>
+              </div>
+            )}
+
+            {gameActive && (
               <button
-                onClick={() => {
-                  setCreativeScore((s) => s + 10);
-                  setOrbsCaught((c) => c + 1);
+                type="button"
+                onClick={handleOrbClick}
+                className="absolute z-10 h-20 w-20 cursor-pointer rounded-full border border-white/80 bg-white/90 shadow-[0_0_60px_rgba(255,255,255,0.95)] transition hover:scale-110 active:scale-95"
+                style={{
+                  left: `${orbPosition.x}px`,
+                  top: `${orbPosition.y}px`,
                 }}
-                className="absolute h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/90 shadow-[0_0_60px_rgba(255,255,255,0.95)] transition hover:scale-110"
-                style={{ left: `${orbPosition.x}%`, top: `${orbPosition.y}%` }}
                 aria-label="Catch orb"
               >
-                <span className="block h-full w-full rounded-full bg-gradient-to-br from-[#fdfefe] via-[#dceeff] to-[#bdd8ff]" />
+                <span className="pointer-events-none block h-full w-full rounded-full bg-gradient-to-br from-[#fdfefe] via-[#dceeff] to-[#bdd8ff]" />
               </button>
-            </div>
+            )}
           </div>
         </div>
       </div>
-    </section>
-  );
+    </div>
+  </section>
+);
 
-  const ContactPage = () => (
+const ContactPage = () => {
+  const [submitted, setSubmitted] = useState(false);
+
+  return (
     <section className="min-h-screen px-6 pb-20 pt-32 md:px-12 lg:px-20">
-      <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1fr_0.8fr]">
-        <div className="rounded-[2rem] border border-white/70 bg-white/70 p-8 shadow-[0_18px_50px_rgba(113,144,196,0.12)]">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-10">
           <p className="text-xs uppercase tracking-[0.45em] text-slate-500">Contact</p>
-          <h1 className="mt-3 font-serif text-5xl text-slate-800 md:text-6xl">Let’s create something beautiful.</h1>
-          <p className="mt-6 max-w-xl text-base leading-8 text-slate-600">
-            Add your email, social links, inquiry form, or booking details here.
+          <h1 className="mt-3 font-serif text-5xl text-slate-800 md:text-6xl">
+            Let’s connect.
+          </h1>
+          <p className="mt-5 max-w-3xl text-base leading-8 text-slate-600">
+            Whether you want to collaborate, ask a question, or just say hi, feel free to send me a message!
           </p>
         </div>
-        <div className="rounded-[2rem] bg-gradient-to-br from-[#ecf5ff] to-[#c3dbff] p-8 shadow-[0_18px_50px_rgba(113,144,196,0.1)]">
-          <div className="rounded-[1.6rem] border border-white/80 bg-white/75 p-6">
-            <p className="text-xs uppercase tracking-[0.35em] text-slate-500">Info</p>
-            <div className="mt-5 space-y-4 text-slate-600">
-              <p>Email / hello@yourname.com</p>
-              <p>Instagram / @yourhandle</p>
-              <p>LinkedIn / your name</p>
+
+        <div className="rounded-[2.2rem] border border-white/70 bg-white/70 p-6 shadow-[0_18px_50px_rgba(113,144,196,0.12)] md:p-8">
+          {!submitted ? (
+            <form
+              action="https://formsubmit.co/kileyzheng@gmail.com"
+              method="POST"
+              target="hidden_iframe"
+              className="space-y-5"
+            >
+              <input type="hidden" name="_captcha" value="false" />
+
+              <input
+                type="text"
+                name="name"
+                placeholder="Name"
+                required
+                className="w-full rounded-[1rem] border border-slate-200 bg-white/80 px-5 py-4 text-lg text-slate-700 outline-none transition placeholder:font-serif placeholder:text-slate-400 focus:border-[#bfd9ff] focus:ring-2 focus:ring-[#dcebff]"
+              />
+
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                required
+                className="w-full rounded-[1rem] border border-slate-200 bg-white/80 px-5 py-4 text-lg text-slate-700 outline-none transition placeholder:font-serif placeholder:text-slate-400 focus:border-[#bfd9ff] focus:ring-2 focus:ring-[#dcebff]"
+              />
+
+              <textarea
+                name="message"
+                rows="3"
+                placeholder="Message"
+                required
+                className="w-full rounded-[1rem] border border-slate-200 bg-white/80 px-5 py-4 text-lg text-slate-700 outline-none transition placeholder:font-serif placeholder:text-slate-400 focus:border-[#bfd9ff] focus:ring-2 focus:ring-[#dcebff]"
+              />
+
+              <div className="flex justify-end pt-2">
+                <button
+                  type="submit"
+                  className="rounded-full border border-[#bfd9ff] bg-[#dcebff] px-6 py-3 text-sm tracking-[0.2em] text-slate-700 transition hover:-translate-y-0.5"
+                >
+                  Send Message
+                </button>
+              </div>
+            </form>
+          ) : (
+            <div className="rounded-[1.5rem] bg-gradient-to-br from-[#edf6ff] to-[#dcebff] p-8 text-center">
+              <h2 className="font-serif text-4xl text-slate-800">Thank you!</h2>
+              <p className="mt-4 text-base leading-8 text-slate-600">
+                Your message has been sent successfully. I will get back to you as soon as I can.
+              </p>
             </div>
-          </div>
+          )}
+
+          <iframe
+            name="hidden_iframe"
+            style={{ display: "none" }}
+            onLoad={() => {
+              if (!submitted) {
+                setSubmitted(true);
+              }
+            }}
+          />
         </div>
       </div>
     </section>
   );
+};
 
   return (
     <div
@@ -360,18 +590,10 @@ export default function PastelLuxuryPortfolio() {
 
       <MainNav />
 
-      <div className="fixed right-6 top-28 z-40 hidden rounded-full border border-white/80 bg-white/60 px-4 py-2 text-xs uppercase tracking-[0.3em] text-slate-500 shadow-sm backdrop-blur md:block">
-        Pastel Blue Studio
-      </div>
-
       {currentPage === "Portfolio" && <PortfolioPage />}
       {currentPage === "About" && <AboutPage />}
       {currentPage === "Creative" && <CreativePage />}
       {currentPage === "Contact" && <ContactPage />}
-
-      <div className="fixed bottom-5 left-1/2 z-40 hidden -translate-x-1/2 rounded-full border border-white/70 bg-white/60 px-4 py-2 text-[11px] uppercase tracking-[0.32em] text-slate-500 backdrop-blur md:block">
-        Designed for soft luxury + personality
-      </div>
 
       {/* Future React Bits ideas:
           - Replace hero panel or folder open transitions with animated reveal components.
