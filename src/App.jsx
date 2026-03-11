@@ -1,6 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import Aurora from './Aurora';
-
+import LiquidEther from './LiquidEther';
 
 export default function PastelLuxuryPortfolio() {
   const navItems = ["Portfolio", "About", "Creative", "Contact"];
@@ -308,18 +307,31 @@ const AboutTab = ({ project, index, onClick, active = false, onHover, onLeave })
   const PortfolioPage = () => (
     <div>
       <section className="relative flex min-h-screen items-center overflow-hidden px-6 pb-10 pt-28 md:px-12 lg:px-20">
-        <div className="absolute inset-0 bg-[#dff1ff]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(248,252,255,0.95),rgb(232, 245, 255),rgb(192, 228, 254),rgb(177, 216, 245),transparent_72%)]" />
-          <div className="pointer-events-none absolute inset-0 opacity-55">
-            <Aurora
-              colorStops={["#f7fcff", "#d9f1ff", "#bfe7ff"]}
-              blend={0.15}
-              amplitude={0.25}
-              speed={0.8}
-            />
+        <div className="absolute inset-0 bg-[#eaf6ff]" />
+
+          <div className="pointer-events-none absolute inset-0 opacity-60">
+            <LiquidEther
+              colors={['#fcfeff', '#f3ecff', '#e4f4ff']}
+              mouseForce={20}
+              cursorSize={100}
+              isViscous
+              viscous={30}
+              iterationsViscous={32}
+              iterationsPoisson={32}
+              resolution={0.5}
+              isBounce={false}
+              autoDemo
+              autoSpeed={0.5}
+              autoIntensity={2.0}
+              takeoverDuration={0.15}
+              autoResumeDelay={3000}
+              autoRampDuration={0.6}
+          />
           </div>
-          <div className="absolute right-[-4rem] top-20 h-72 w-72 rounded-full bg-white/40 blur-3xl" />
-          <div className="absolute bottom-12 left-[-3rem] h-56 w-56 rounded-full bg-[#dcecff]/60 blur-3xl" />
+
+
+          <div className="absolute right-[-4rem] top-20 h-72 w-72 rounded-full bg-[#f4fbff]/70 blur-3xl" />
+          <div className="absolute bottom-12 left-[-3rem] h-56 w-56 rounded-full bg-[#cfeeff]/75 blur-3xl" />
 
 
         <div className="relative mx-auto grid w-full max-w-7xl gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
@@ -368,7 +380,7 @@ const AboutTab = ({ project, index, onClick, active = false, onHover, onLeave })
 
                   <div className="rounded-[1.5rem] bg-white/50 p-5">
                     <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Aesthetic</p>
-                    <p className="mt-3 font-serif text-3xl text-slate-700">Minimal, Soft, Luxurious</p>
+                    <p className="mt-3 font-serif text-3xl text-slate-700">Silky, Soft, Luxurious</p>
                   </div>
                 </div>
 

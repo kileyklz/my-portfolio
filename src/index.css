@@ -1,6 +1,4 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
 
 @custom-variant dark (&:is(.dark *));
@@ -15,19 +13,18 @@ body {
 
 @font-face {
   font-family: "Cezanne";
-  src: url("./assets/fonts/Cezanne\ Regular.otf") format("opentype");
+  src: url("./assets/fonts/Cezanne Regular.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
 
 .font-cezanne {
   font-family: "Cezanne", serif;
-
 }
 
 @font-face {
   font-family: "Fadeline";
-  src: url("./assets/fonts/Fadeline\ Demo.ttf") format("truetype");
+  src: url("./assets/fonts/Fadeline Demo.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -38,7 +35,7 @@ body {
 
 @font-face {
   font-family: "Patung";
-  src: url("./assets/fonts/Patung.otf") format("truetype");
+  src: url("./assets/fonts/Patung.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
@@ -49,7 +46,7 @@ body {
 
 @font-face {
   font-family: "Conso";
-  src: url("./assets/fonts/Conso\ Regular.woff2") format("truetype");
+  src: url("./assets/fonts/Conso Regular.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
 }
@@ -57,6 +54,7 @@ body {
 .font-conso {
   font-family: "Conso", sans-serif;
 }
+
 
 :root {
   --background: oklch(1 0 0);
