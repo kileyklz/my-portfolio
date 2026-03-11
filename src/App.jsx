@@ -449,8 +449,17 @@ const CreativePage = () => (
             </p>
           </div>
 
+          <div className="block md:hidden">
+            <div className="mx-auto rounded-[1.7rem] border border-white/70 bg-white/60 p-10 text-center">
+              <h2 className="font-serif text-3xl text-slate-800">Mobile version coming soon</h2>
+              <p className="mt-4 text-base leading-8 text-slate-600">
+                This little game works best on a larger screen for now.
+              </p>
+            </div>
+          </div>
+
           <div
-            className="relative mx-auto h-[420px] w-full overflow-hidden rounded-[1.7rem] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.75),rgba(226,239,255,0.85))]"
+            className="relative mx-auto hidden h-[420px] w-full overflow-hidden rounded-[1.7rem] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.75),rgba(226,239,255,0.85))] md:block"
             style={{ maxWidth: `${gameWidth}px` }}
           >
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.9),transparent_55%)]" />
