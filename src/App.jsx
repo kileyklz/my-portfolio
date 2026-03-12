@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import LiquidEther from './LiquidEther';
+import MagicBento from './MagicBento';
 
 export default function PastelLuxuryPortfolio() {
   const navItems = ["Portfolio", "About", "Creative", "Contact"];
@@ -476,52 +477,31 @@ const AboutTab = ({ project, index, onClick, active = false, onHover, onLeave })
     </div>
   );
 
-  const AboutPage = () => {
-  const tabs = Object.keys(aboutSections);
-  const section = aboutSections[aboutTab];
-
-  return (
-    <section className="min-h-screen px-6 pb-20 pt-32 md:px-12 lg:px-20">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="text-xs uppercase tracking-[0.45em] text-slate-500">Who I am</p>
-            <h1 className="mt-3 font-patung text-8xl text-slate-800 md:text-8xl">
-              About me
-            </h1>
+    const AboutPage = () => {
+    return (
+      <section className="min-h-screen px-6 pb-20 pt-32 md:px-12 lg:px-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-[0.45em] text-slate-500">Who I am</p>
+              <h1 className="mt-3 font-patung text-8xl text-slate-800 md:text-8xl">
+                About me
+              </h1>
+            </div>
+            <p className="max-w-lg text-sm leading-7 text-slate-600">
+              Explore different parts of my background in a more interactive layout.
+            </p>
           </div>
-          <p className="max-w-lg text-sm leading-7 text-slate-600">
-            Explore different parts of my background by hovering over each tab, then click to open the section below.
-          </p>
+
+          <div className="rounded-[2.2rem] border border-white/70 bg-white/78 p-4 shadow-[0_24px_60px_rgba(113,144,196,0.14)] backdrop-blur-xl md:p-6">
+            <MagicBento />
+          </div>
         </div>
+      </section>
+    );
+  };
 
-        <div className="relative">
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4 xl:gap-3">
-            {tabs.map((tab, index) => {
-              const tabSection = aboutSections[tab];
-
-              return (
-                <AboutTab
-                  key={tab}
-                  project={{
-                    title: tab,
-                    type: "About Section",
-                    year: "",
-                    description: tabSection.body,
-                    previewTitle: tabSection.title,
-                    previewText: tabSection.extras[0],
-                  }}
-                  index={index}
-                  active={aboutTab === tab}
-                  onClick={() => setAboutTab(tab)}
-                  onHover={() => setHoveredProject(index)}
-                  onLeave={() => setHoveredProject(null)}
-                />
-              );
-            })}
-          </div>
-
-          <div className="relative z-10 -mt-1 rounded-[2.2rem] border border-white/70 bg-white/78 p-8 shadow-[0_24px_60px_rgba(113,144,196,0.14)] backdrop-blur-xl">
+    /*<div className="relative z-10 -mt-1 rounded-[2.2rem] border border-white/70 bg-white/78 p-8 shadow-[0_24px_60px_rgba(113,144,196,0.14)] backdrop-blur-xl">
             <div className="grid gap-8 lg:grid-cols-[1fr_0.7fr] lg:items-start">
               <div>
                 <p className="text-xs uppercase tracking-[0.35em] text-slate-500">
@@ -552,11 +532,7 @@ const AboutTab = ({ project, index, onClick, active = false, onHover, onLeave })
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-  );
-};
+        */
 
 
 /*
