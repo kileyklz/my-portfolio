@@ -3,7 +3,9 @@ import LiquidEther from './LiquidEther';
 
 export default function PastelLuxuryPortfolio() {
   const navItems = ["Portfolio", "About", "Creative", "Contact"];
-  const [currentPage, setCurrentPage] = useState("Portfolio");
+  const [currentPage, setCurrentPage] = useState(() => {
+  return localStorage.getItem("currentPage") || "Portfolio";
+});
   const [activeProject, setActiveProject] = useState(0);
   const [hoveredProject, setHoveredProject] = useState(null);
   const [aboutTab, setAboutTab] = useState("Who I Am");
@@ -27,6 +29,15 @@ export default function PastelLuxuryPortfolio() {
   const gameWidth = 900; prob dont even need this and is causing weird scaling issues.
   const gameHeight = 420;
   */
+ useEffect(() => {
+  localStorage.setItem("currentPage", currentPage);
+}, [currentPage]);
+
+useEffect(() => {
+  window.scrollTo(0, 0);
+}, [currentPage]);
+
+
 
   const projects = useMemo(
   () => [
@@ -144,11 +155,6 @@ export default function PastelLuxuryPortfolio() {
 
     return () => clearTimeout(timer);
   }, [gameActive, timeLeft]);
-
-
-useEffect(() => {
-  window.scrollTo(0, 0);
-}, [currentPage]);
 
 /* 
 useEffect(() => {
@@ -499,7 +505,6 @@ const AboutTab = ({ project, index, onClick, active = false, onHover, onLeave })
                   key={tab}
                   project={{
                     title: tab,
-                    type: "About Section",
                     year: "",
                     description: tabSection.body,
                     previewTitle: tabSection.title,
@@ -787,6 +792,11 @@ const ContactPage = () => {
       {currentPage === "About" && <AboutPage />}
       {currentPage === "Creative" && <CreativePage />}
       {currentPage === "Contact" && <ContactPage />}
+
+      <footer className="px-6 pb-10 pt-4 text-center text-sm text-slate-500">
+        <p>Styled softly, built gently, designed intentionally.</p>
+        <p className="mt-2">© 2025 Kiley Zheng.</p>
+      </footer>
 
       {/* Future React Bits ideas:
           - Replace hero panel or folder open transitions with animated reveal components.
