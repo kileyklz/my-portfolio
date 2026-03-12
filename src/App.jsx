@@ -408,7 +408,7 @@ const AboutTab = ({ project, index, onClick, active = false, onHover, onLeave })
 
       <section className="px-6 pb-24 pt-8 md:px-12 lg:px-20">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-10 flex flex-col gap-4">
+          <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end">
             <div>
               <p className="text-xs uppercase tracking-[0.45em] text-slate-500">Learn more about my work</p>
               <h2 className="mt-3 font-patung text-7xl text-slate-800 md:text-7xl">
